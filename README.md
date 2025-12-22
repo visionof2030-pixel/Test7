@@ -44,6 +44,8 @@ input, textarea, select {
 textarea {
   resize: vertical;
   min-height: 70px;
+  max-height: 120px; /* تحديد أقصى ارتفاع */
+  overflow-y: auto; /* إضافة شريط تمرير عند الحاجة */
 }
 .small-grid {
   display: grid;
@@ -160,13 +162,26 @@ button#printBtn {
   text-align: center;
   font-size: 5.5pt;
   min-height: 22px;
+  max-height: 40px; /* تحديد أقصى ارتفاع */
   border-radius: 2px;
   background: #f8f9fa;
+  overflow: hidden; /* منع تجاوز النص */
+  text-overflow: ellipsis; /* إضافة ... عند النص الطويل */
 }
 .box strong {
   display: block;
   font-size: 5.5pt;
   color: #0a3b40;
+  margin-bottom: 1px;
+}
+.box div {
+  font-size: 5.5pt;
+  line-height: 1.2;
+  max-height: 28px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* تحديد عدد الأسطر */
+  -webkit-box-orient: vertical;
 }
 .goal-section {
   background: #e8f5e9;
@@ -176,6 +191,8 @@ button#printBtn {
   margin-bottom: 8px;
   text-align: center;
   min-height: auto;
+  max-height: 80px; /* تحديد أقصى ارتفاع */
+  overflow: hidden;
 }
 .goal-section strong {
   font-size: 10px;
@@ -184,6 +201,11 @@ button#printBtn {
 .goal-section div {
   font-size: 10px;
   line-height: 1.3;
+  max-height: 55px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* تحديد عدد الأسطر */
+  -webkit-box-orient: vertical;
 }
 .grid2 {
   display: grid;
@@ -202,6 +224,8 @@ button#printBtn {
   padding: 5px;
   border-radius: 5px;
   font-size: 10px;
+  max-height: 100px; /* تحديد أقصى ارتفاع */
+  overflow: hidden; /* منع تجاوز المحتوى */
 }
 .section strong {
   font-size: 10px;
@@ -211,12 +235,16 @@ button#printBtn {
 .section div {
   font-size: 10px;
   line-height: 1.3;
+  max-height: 75px;
+  overflow-y: auto; /* إضافة تمرير رأسي عند الحاجة */
+  padding-right: 3px;
 }
 /* المحفزات - باللون الأخضر الليموني */
 .section.motivators {
   border: 1px solid #9ccc65;
   background: #f1f8e9;
   min-height: 50px;
+  max-height: 80px; /* تحديد أقصى ارتفاع */
   height: auto;
   padding: 3px;
   font-size: 9px;
@@ -229,12 +257,14 @@ button#printBtn {
 .section.motivators div {
   font-size: 9px;
   line-height: 1.2;
+  max-height: 55px;
 }
 /* نقاط القوة - باللون الأزرق الغامق */
 .section.strengths {
   border: 1px solid #0d47a1;
   background: #e3f2fd;
   min-height: 50px;
+  max-height: 80px;
   height: auto;
   padding: 3px;
   font-size: 9px;
@@ -247,12 +277,14 @@ button#printBtn {
 .section.strengths div {
   font-size: 9px;
   line-height: 1.2;
+  max-height: 55px;
 }
 /* التحديات - باللون الأصفر */
 .section.challenges {
   border: 1px solid #f57f17;
   background: #fffde7;
   min-height: 50px;
+  max-height: 80px;
   height: auto;
   padding: 3px;
   font-size: 9px;
@@ -265,12 +297,14 @@ button#printBtn {
 .section.challenges div {
   font-size: 9px;
   line-height: 1.2;
+  max-height: 55px;
 }
 /* مواطن القصور - باللون الأحمر */
 .section.weaknesses {
   border: 1px solid #c62828;
   background: #ffebee;
   min-height: 50px;
+  max-height: 80px;
   height: auto;
   padding: 3px;
   font-size: 9px;
@@ -283,6 +317,7 @@ button#printBtn {
 .section.weaknesses div {
   font-size: 9px;
   line-height: 1.2;
+  max-height: 55px;
 }
 .images {
   display: grid;
@@ -361,16 +396,16 @@ button#printBtn {
     <option value="تقرير نشاط إثرائي" selected>تقرير نشاط إثرائي</option>
     <option value="تقرير خطة علاجية">تقرير خطة علاجية</option>
   </select>
-  <input placeholder="المستهدفون" oninput="sync('target',this.value)">
-  <input placeholder="العدد" oninput="sync('count',this.value)">
-  <input placeholder="مكان التنفيذ" oninput="sync('location',this.value)">
+  <input placeholder="المستهدفون" oninput="sync('target',this.value)" maxlength="30" title="الحد الأقصى 30 حرف">
+  <input placeholder="العدد" oninput="sync('count',this.value)" maxlength="10" title="الحد الأقصى 10 أرقام">
+  <input placeholder="مكان التنفيذ" oninput="sync('location',this.value)" maxlength="40" title="الحد الأقصى 40 حرف">
   <select id="semesterSelect" onchange="sync('semester',this.value)">
     <option value="">اختر الفصل الدراسي</option>
     <option value="الفصل الدراسي الأول">الفصل الدراسي الأول</option>
     <option value="الفصل الدراسي الثاني">الفصل الدراسي الثاني</option>
   </select>
-  <input placeholder="الصف" oninput="sync('grade',this.value)">
-  <input placeholder="المادة" oninput="sync('subject',this.value)">
+  <input placeholder="الصف" oninput="sync('grade',this.value)" maxlength="20" title="الحد الأقصى 20 حرف">
+  <input placeholder="المادة" oninput="sync('subject',this.value)" maxlength="25" title="الحد الأقصى 25 حرف">
 </div>
 
 <div class="auto-row">
@@ -378,56 +413,56 @@ button#printBtn {
   <button class="auto-btn clear-btn" onclick="clearAllFields()">مسح جميع الحقول</button>
 </div>
 
-<label>الهدف التربوي</label>
-<textarea id="goalInput" oninput="sync('goal',this.value)"></textarea>
+<label>الهدف التربوي (الحد الأقصى: 150 حرف)</label>
+<textarea id="goalInput" oninput="sync('goal',this.value)" maxlength="150" title="الحد الأقصى 150 حرف"></textarea>
 
-<label>وصف مختصر</label>
-<textarea id="desc1Input" oninput="sync('desc1',this.value)"></textarea>
+<label>وصف مختصر (الحد الأقصى: 200 حرف)</label>
+<textarea id="desc1Input" oninput="sync('desc1',this.value)" maxlength="200" title="الحد الأقصى 200 حرف"></textarea>
 
-<label>إجراءات التنفيذ</label>
-<textarea id="desc2Input" oninput="sync('desc2',this.value)"></textarea>
+<label>إجراءات التنفيذ (الحد الأقصى: 300 حرف)</label>
+<textarea id="desc2Input" oninput="sync('desc2',this.value)" maxlength="300" title="الحد الأقصى 300 حرف"></textarea>
 
-<label>النتائج</label>
-<textarea id="desc3Input" oninput="sync('desc3',this.value)"></textarea>
+<label>النتائج (الحد الأقصى: 250 حرف)</label>
+<textarea id="desc3Input" oninput="sync('desc3',this.value)" maxlength="250" title="الحد الأقصى 250 حرف"></textarea>
 
-<label>التوصيات</label>
-<textarea id="desc4Input" oninput="sync('desc4',this.value)"></textarea>
+<label>التوصيات (الحد الأقصى: 250 حرف)</label>
+<textarea id="desc4Input" oninput="sync('desc4',this.value)" maxlength="250" title="الحد الأقصى 250 حرف"></textarea>
 
 <!-- الصف الأول: المحفزات ونقاط القوة -->
 <div class="grid2">
   <div>
-    <label>المحفزات</label>
-    <textarea id="motivatorsInput" oninput="sync('motivators',this.value)"></textarea>
+    <label>المحفزات (الحد الأقصى: 200 حرف)</label>
+    <textarea id="motivatorsInput" oninput="sync('motivators',this.value)" maxlength="200" title="الحد الأقصى 200 حرف"></textarea>
   </div>
   <div>
-    <label>نقاط القوة</label>
-    <textarea id="strengthsInput" oninput="sync('strengths',this.value)"></textarea>
+    <label>نقاط القوة (الحد الأقصى: 200 حرف)</label>
+    <textarea id="strengthsInput" oninput="sync('strengths',this.value)" maxlength="200" title="الحد الأقصى 200 حرف"></textarea>
   </div>
 </div>
 
 <!-- الصف الثاني: التحديات ومواطن القصور -->
 <div class="grid2">
   <div>
-    <label>التحديات</label>
-    <textarea id="challengesInput" oninput="sync('challenges',this.value)"></textarea>
+    <label>التحديات (الحد الأقصى: 200 حرف)</label>
+    <textarea id="challengesInput" oninput="sync('challenges',this.value)" maxlength="200" title="الحد الأقصى 200 حرف"></textarea>
   </div>
   <div>
-    <label>مواطن القصور</label>
-    <textarea id="weaknessesInput" oninput="sync('weaknesses',this.value)"></textarea>
+    <label>مواطن القصور (الحد الأقصى: 200 حرف)</label>
+    <textarea id="weaknessesInput" oninput="sync('weaknesses',this.value)" maxlength="200" title="الحد الأقصى 200 حرف"></textarea>
   </div>
 </div>
 
-<label>إرفاق الصور (اختياري)</label>
-<input type="file" multiple accept="image/*" onchange="loadImages(this)">
+<label>إرفاق الصور (اختياري - الحد الأقصى: صورتين)</label>
+<input type="file" multiple accept="image/*" onchange="loadImages(this)" title="يمكن إرفاق صورتين كحد أقصى">
 
 <div class="signatures">
   <div class="teacher-signature">
     <div class="signature-label">اسم المعلم</div>
-    <input type="text" id="teacherInput" placeholder="أدخل اسم المعلم" oninput="sync('teacherName', this.value)">
+    <input type="text" id="teacherInput" placeholder="أدخل اسم المعلم" oninput="sync('teacherName', this.value)" maxlength="50">
   </div>
   <div class="principal-signature">
     <div class="signature-label">اسم مدير المدرسة</div>
-    <input type="text" id="principalInput" placeholder="أدخل اسم المدير" oninput="sync('principalName', this.value)">
+    <input type="text" id="principalInput" placeholder="أدخل اسم المدير" oninput="sync('principalName', this.value)" maxlength="50">
   </div>
 </div>
 
@@ -508,64 +543,34 @@ button#printBtn {
 const smartReportTexts = {
   "تقرير نشاط إثرائي": {
     goal: "تمكين الطلاب المتميزين من تنمية قدراتهم العقلية والابداعية عبر أنشطة تعليمية متقدمة",
-    desc1: "مبادرة تعليمية تهدف إلى إثراء خبرات الطلاب المتفوقين وتنمية مهارات التفكير النقدي والإبداعي لديهم",
+    desc1: "مبادرة تعليمية تهدف إلى إثراء خبرات الطلاب المتفوقين وتنمية مهارات التفكير النقدي والإبداعي",
     desc2: "تحديد الموهوبين أكاديمياً، تصميم برامج إثرائية مخصصة، توفير مختبرات علمية متطورة، إشراف أكاديمي متخصص، تقييم أداء دوري",
-    desc3: "ارتفاع مستوى التفكير التحليلي بنسبة 40%، تطوير 15 مشروعاً بحثياً مبتكراً، مشاركة في مسابقات علمية محلية، تحسن الثقة بالنفس لدى المشاركين",
+    desc3: "ارتفاع مستوى التفكير التحليلي بنسبة 40%، تطوير 15 مشروعاً بحثياً مبتكراً، مشاركة في مسابقات علمية محلية، تحسن الثقة بالنفس",
     desc4: "توسيع قاعدة المستفيدين، إنشاء نادي علمي دائم، توثيق التجارب الناجحة، تدريب المعلمين على استراتيجيات الإثراء",
-    motivators: "جوائز تقديرية للمتميزين، رحلات علمية استكشافية، شهادات مشاركة معتمدة، نشر الإنجازات في الوسائل التعليمية",
-    strengths: "معلمون متخصصون في الموهوبين، مرافق تعليمية مجهزة، دعم إداري كامل، شراكات مع جامعات محلية، منهجية علمية متكاملة",
-    challenges: "محدودية الموارد المالية، صعوبة التوفيق بين البرنامج والمنهج الرسمي، تفاوت القدرات بين الموهوبين، نقص الخبرات المتخصصة",
-    weaknesses: "ضعف المتابعة الأسرية، قلة الوقت المخصص، عدم وجود معايير موحدة للتقييم، محدودية وسائل الإثراء التقنية"
+    motivators: "جوائز تقديرية للمتميزين، رحلات علمية استكشافية، شهادات مشاركة معتمدة، نشر الإنجازات",
+    strengths: "معلمون متخصصون في الموهوبين، مرافق تعليمية مجهزة، دعم إداري كامل، شراكات مع جامعات",
+    challenges: "محدودية الموارد المالية، صعوبة التوفيق بين البرنامج والمنهج الرسمي، تفاوت القدرات",
+    weaknesses: "ضعف المتابعة الأسرية، قلة الوقت المخصص، عدم وجود معايير موحدة للتقييم"
   },
   
   "تقرير خطة علاجية": {
-    goal: "معالجة الفجوات التعليمية لدى الطلاب المتأخرين دراسياً وتمكينهم من اللحاق بأقرانهم عبر برامج تدخل منهجية",
-    desc1: "برنامج منهجي شامل لتشخيص ومعالجة الصعوبات التعليمية لدى الفئات الأكثر احتياجاً للدعم الأكاديمي",
-    desc2: "تشخيص فردي لكل حالة، وضع خطط علاجية مخصصة، جلسات تعليمية مكثفة، استخدام وسائل تعليمية مساندة، تقييم تقدم أسبوعي، توجيه وإرشاد تربوي",
-    desc3: "تحسن 85% من الطلاب في المهارات الأساسية، ارتفاع معدلات النجاح بنسبة 30%، زيادة الثقة الأكاديمية، تحسن السلوك التعليمي، تفاعل إيجابي مع المنهج",
-    desc4: "تطوير أدوات تشخيصية دقيقة، تدريب فرق علاجية متخصصة، إنشاء بنك موارد تعليمية، تعزيز الشراكة مع الأسر، إعداد تقارير متابعة دورية",
-    motivators: "برامج تحفيزية مرحلية، جوائز للتحسن الملحوظ، شهادات تقدير، نشر قصص النجاح، تخصيص مرشدين أكاديميين",
-    strengths: "فريق عمل متخصص، منهجية علاجية مثبتة، مرونة في الجدولة، دعم نفسي وتربوي، تعاون مجتمعي",
-    challenges: "مقاومة التغيير من بعض الطلاب، صعوبة إقناع الأسر، نقص الموارد التعليمية المساندة، ضغط الوقت والمنهج",
-    weaknesses: "عدم انتظام الحضور، ضعف المتابعة المنزلية، قلة الكوادر المتخصصة، محدودية التمويل، صعوبة قياس الأثر البعيد"
+    goal: "معالجة الفجوات التعليمية لدى الطلاب المتأخرين دراسياً وتمكينهم من اللحاق بأقرانهم",
+    desc1: "برنامج منهجي شامل لتشخيص ومعالجة الصعوبات التعليمية لدى الفئات الأكثر احتياجاً للدعم",
+    desc2: "تشخيص فردي لكل حالة، وضع خطط علاجية مخصصة، جلسات تعليمية مكثفة، استخدام وسائل تعليمية مساندة",
+    desc3: "تحسن 85% من الطلاب في المهارات الأساسية، ارتفاع معدلات النجاح بنسبة 30%، زيادة الثقة الأكاديمية",
+    desc4: "تطوير أدوات تشخيصية دقيقة، تدريب فرق علاجية متخصصة، إنشاء بنك موارد تعليمية، تعزيز الشراكة",
+    motivators: "برامج تحفيزية مرحلية، جوائز للتحسن الملحوظ، شهادات تقدير، نشر قصص النجاح",
+    strengths: "فريق عمل متخصص، منهجية علاجية مثبتة، مرونة في الجدولة، دعم نفسي وتربوي",
+    challenges: "مقاومة التغيير من بعض الطلاب، صعوبة إقناع الأسر، نقص الموارد التعليمية المساندة",
+    weaknesses: "عدم انتظام الحضور، ضعف المتابعة المنزلية، قلة الكوادر المتخصصة، محدودية التمويل"
   }
 };
 
-// توليد نصوص ذكية ومتنوعة عند الضغط على الزر
-function getSmartTexts(reportType) {
-  const texts = smartReportTexts[reportType];
-  if (!texts) return null;
-  
-  // إنشاء نصوص متنوعة لكل مرة
-  const variations = {
-    goal: [
-      texts.goal,
-      texts.goal.replace("تمكين", "تعزيز").replace("تنمية", "تطوير"),
-      texts.goal + " مع التركيز على تحقيق أقصى استفادة ممكنة من الموارد المتاحة"
-    ],
-    desc1: [
-      texts.desc1,
-      texts.desc1.replace("مبادرة", "برنامج").replace("تهدف", "يسعى"),
-      "مشروع تربوي مبتكر يركز على " + texts.desc1.split(" ").slice(2).join(" ")
-    ],
-    desc2: [
-      texts.desc2,
-      texts.desc2.split("، ").sort(() => Math.random() - 0.5).join("، "),
-      "تطبيق استراتيجيات متعددة تشمل: " + texts.desc2
-    ]
-  };
-  
-  return {
-    goal: variations.goal[Math.floor(Math.random() * variations.goal.length)],
-    desc1: variations.desc1[Math.floor(Math.random() * variations.desc1.length)],
-    desc2: variations.desc2[Math.floor(Math.random() * variations.desc2.length)],
-    desc3: texts.desc3,
-    desc4: texts.desc4,
-    motivators: texts.motivators,
-    strengths: texts.strengths,
-    challenges: texts.challenges,
-    weaknesses: texts.weaknesses
-  };
+// تقصير النصوص الطويلة لعرضها في المربعات
+function truncateText(text, maxLength) {
+  if (!text) return '';
+  if (text.length <= maxLength) return text;
+  return text.substring(0, maxLength - 3) + '...';
 }
 
 // دالة للحصول على التاريخ الهجري من API خارجي
@@ -597,14 +602,34 @@ function updateEduInfo(value) {
   if (!value) return;
   const eduHeader = document.getElementById('eduHeader');
   if (eduHeader) {
-    eduHeader.textContent = value;
+    eduHeader.textContent = truncateText(value, 50);
   }
 }
 
 function sync(id, value) {
   const el = document.getElementById(id);
   if (el) {
-    el.textContent = value;
+    // تحديد أقصى طول للنصوص بناءً على نوع الحقل
+    let maxLength;
+    switch(id) {
+      case 'goal': maxLength = 150; break;
+      case 'desc1': maxLength = 200; break;
+      case 'desc2': maxLength = 300; break;
+      case 'desc3': maxLength = 250; break;
+      case 'desc4': maxLength = 250; break;
+      case 'motivators': maxLength = 200; break;
+      case 'strengths': maxLength = 200; break;
+      case 'challenges': maxLength = 200; break;
+      case 'weaknesses': maxLength = 200; break;
+      case 'target': maxLength = 30; break;
+      case 'count': maxLength = 10; break;
+      case 'location': maxLength = 40; break;
+      case 'grade': maxLength = 20; break;
+      case 'subject': maxLength = 25; break;
+      default: maxLength = 100;
+    }
+    
+    el.textContent = truncateText(value, maxLength);
   }
 }
 
@@ -614,10 +639,10 @@ function autoFillReport(reportType) {
     return;
   }
   
-  const texts = getSmartTexts(reportType);
+  const texts = smartReportTexts[reportType];
   if (!texts) return;
 
-  // تعبئة الحقول
+  // تعبئة الحقول مع قص النصوص الطويلة
   document.getElementById('goalInput').value = texts.goal;
   document.getElementById('desc1Input').value = texts.desc1;
   document.getElementById('desc2Input').value = texts.desc2;
@@ -628,7 +653,7 @@ function autoFillReport(reportType) {
   document.getElementById('challengesInput').value = texts.challenges;
   document.getElementById('weaknessesInput').value = texts.weaknesses;
 
-  // مزامنة مع العرض
+  // مزامنة مع العرض مع قص النصوص
   sync('goal', texts.goal);
   sync('desc1', texts.desc1);
   sync('desc2', texts.desc2);
@@ -713,7 +738,11 @@ function clearAllFields() {
 function loadImages(input) {
   const box = document.getElementById("imagesBox");
   box.innerHTML = "";
-  Array.from(input.files).slice(0, 2).forEach(file => {
+  const files = Array.from(input.files).slice(0, 2);
+  if (files.length > 2) {
+    alert("يمكنك إرفاق صورتين كحد أقصى");
+  }
+  files.forEach(file => {
     const reader = new FileReader();
     reader.onload = e => {
       const img = document.createElement("img");
