@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -199,12 +199,9 @@ border-bottom:1px solid #ccd9d0;margin-bottom:4px;padding-bottom:3px;
 }
 .report-box-content{font-size:10px;line-height:1.3;}
 
-..image-evidence-grid{
-display:grid;
-grid-template-columns:65px 65px;
-justify-content:center;
-gap:10px;
-margin-top:8px;
+.image-evidence-grid{
+display:grid;grid-template-columns:1fr 1fr;
+gap:8px;margin-top:8px;
 }
 .image-box{
 height:130px;border:1px dashed #066d4d;border-radius:8px;
