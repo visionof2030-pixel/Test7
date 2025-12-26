@@ -1,70 +1,82 @@
-<!DOCTYPE html>
+
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <title>أداة إصدار التقارير والشواهد</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;}
-html,body{font-family:'Cairo',sans-serif;background:#ffffff;direction:rtl;}
-.container{max-width:900px;margin:auto;padding:10px;}
+html,body{
+font-family:'Cairo',sans-serif;
+background:#ffffff;
+direction:rtl;
+overflow-x:hidden;
+width:100%;
+}
+.container{width:100%;max-width:900px;margin:auto;padding:10px;}
 
 label{font-size:13px;font-weight:700;margin-top:10px;display:block;color:#083024;}
 input,select,textarea{
-width:100%;padding:7px;margin-top:4px;
-border:1px solid #066d4d;border-radius:6px;font-size:12px;
+width:100%;padding:8px;margin-top:4px;
+border:1px solid #066d4d;border-radius:6px;font-size:13px;
 }
-textarea{height:75px;resize:none;}
+textarea{height:85px;resize:none;}
 
-.auto-buttons{display:flex;gap:5px;margin-top:5px;}
+.auto-buttons{display:flex;gap:5px;margin-top:5px;flex-wrap:wrap;}
 .auto-buttons button{
 padding:4px 7px;background:#0a5c58;border:none;color:#fff;
 cursor:pointer;border-radius:3px;font-size:10px;
 }
 
-/* زرار PDF واتساب */
 .btn-container{
-text-align:center;padding:10px;background:#f5f5f5;
-position:sticky;top:0;z-index:10;
+text-align:center;padding:10px;background:#f0f0f0;
+position:fixed;top:0;left:0;width:100%;z-index:9999;
 display:flex;gap:10px;justify-content:center;
+box-shadow:0 2px 6px rgba(0,0,0,0.15);
 }
 button.main-btn{
 background:#066d4d;color:#fff;border:none;
-padding:10px 16px;font-size:14px;border-radius:6px;cursor:pointer;
+padding:10px 16px;font-size:15px;border-radius:6px;cursor:pointer;
+white-space:nowrap;
 }
 button.main-btn:hover{background:#05523a;}
 
-/* التقرير */
-#report-content{margin-top:25px;}
+#report-content{margin-top:65px;width:100%;padding:5px;}
 
 .header{
-width:100%;height:125px;margin-top:15px;
-position:relative;background:#083024;
-display:flex;align-items:center;justify-content:center;
+width:100%;min-height:120px;position:relative;
+background:#083024;display:flex;
+align-items:center;justify-content:center;
 border-radius:6px;
 }
-.header img{width:150px;opacity:.95;}
+.header img{width:140px;max-width:45%;}
 .header-right-top,.header-right-bottom,.header-left-bottom{
 position:absolute;color:#ffffff;font-weight:700;
+font-size:11px;
 }
-.header-right-top{top:6px;right:12px;font-size:12px;}
-.header-right-bottom{bottom:6px;right:12px;font-size:11px;}
-.header-left-bottom{bottom:6px;left:12px;font-size:11px;}
 
-.page{max-width:830px;padding:10px;margin:auto;}
+.header-right-top{top:4px;right:6px;}
+.header-right-bottom{bottom:4px;right:6px;}
+.header-left-bottom{bottom:4px;left:6px;}
+
+.page{width:100%;padding:5px;margin-top:10px;}
 
 .info-grid{
-display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-gap:6px;margin-bottom:12px;margin-top:10px;
+display:grid;grid-template-columns:repeat(2,1fr);
+gap:5px;margin-bottom:10px;
 }
+
+@media(min-width:700px){
+.info-grid{grid-template-columns:repeat(7,1fr);}
+}
+
 .info-box{
-background:#e8f2ee;border-radius:8px;
-font-size:11px;font-weight:600;
-color:#083024;text-align:center;
-height:42px;
-display:flex;align-items:center;justify-content:center;
+background:#e8f2ee;border-radius:6px;
+font-size:11px;font-weight:600;color:#083024;
+text-align:center;padding:5px;
 border:1px solid rgba(6,109,77,0.35);
 }
 
@@ -72,23 +84,24 @@ border:1px solid rgba(6,109,77,0.35);
 background:#ffffff;border-radius:8px;
 padding:6px;
 border:1px solid rgba(6,109,77,0.35);
-height:110px;overflow:auto;margin-bottom:8px;
-}
-
-.objective-title,.report-box-title{
-font-size:12px;font-weight:700;text-align:center;color:#083024;
-border-bottom:1px solid #ccd9d0;margin-bottom:4px;padding-bottom:3px;
+min-height:110px;overflow:auto;margin-bottom:8px;
 }
 
 .report-row{
-display:grid;grid-template-columns:1fr 1fr;
-gap:10px;margin-bottom:8px;
+display:flex;flex-direction:column;gap:10px;
+}
+@media(min-width:700px){
+.report-row{display:grid;grid-template-columns:1fr 1fr;}
 }
 
 .image-evidence-grid{
-display:grid;grid-template-columns:1fr 1fr;
+display:grid;grid-template-columns:1fr;
 gap:8px;margin-top:8px;
 }
+@media(min-width:700px){
+.image-evidence-grid{grid-template-columns:1fr 1fr;}
+}
+
 .image-box{
 height:200px;border:1px dashed #066d4d;border-radius:8px;
 display:flex;align-items:center;justify-content:center;
@@ -98,9 +111,8 @@ color:#066d4d;font-size:10px;overflow:hidden;
 .signature-section{
 margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:20px;
 }
-.signature-box{
-text-align:center;font-size:11px;color:#083024;font-weight:600;
-}
+
+.signature-box{text-align:center;font-size:11px;color:#083024;font-weight:600;}
 .signature-line{
 margin-top:8px;border-top:1px solid #083024;
 width:80%;margin-inline:auto;margin-bottom:4px;
@@ -108,7 +120,7 @@ width:80%;margin-inline:auto;margin-bottom:4px;
 
 .footer{
 width:100%;background:#083024;color:#ffffff;
-text-align:center;font-size:10px;padding:4px 0;margin-top:18px;
+text-align:center;font-size:10px;padding:6px 0;margin-top:15px;
 }
 </style>
 </head>
@@ -116,12 +128,12 @@ text-align:center;font-size:10px;padding:4px 0;margin-top:18px;
 <body>
 
 <div class="container">
+
 <div class="btn-container">
-<button class="main-btn" onclick="downloadPDF()">تنزيل ملف PDF</button>
-<button class="main-btn" onclick="sharePDFWhatsApp()">مشاركة واتساب</button>
+<button class="main-btn" onclick="generatePDF()">تنزيل PDF</button>
+<button class="main-btn" onclick="shareWhatsApp()">مشاركة واتساب</button>
 </div>
 
-<!-- أداة الإدخال -->
 <label>إدارة التعليم</label>
 <select id="education" onchange="updateReport()">
 <option value="">اختر الإدارة</option>
@@ -242,13 +254,12 @@ text-align:center;font-size:10px;padding:4px 0;margin-top:18px;
 </div>
 
 <label>الصورة 1</label>
-<input type="file" id="img1" accept="image/*" onchange="loadImage(this,'imgBox1')">
+<input type="file" accept="image/*" onchange="loadImage(this,'imgBox1')">
 
 <label>الصورة 2</label>
-<input type="file" id="img2" accept="image/*" onchange="loadImage(this,'imgBox2')">
+<input type="file" accept="image/*" onchange="loadImage(this,'imgBox2')">
 
 
-<!-- قالب التقرير -->
 <div id="report-content">
 
 <div class="header">
@@ -337,52 +348,52 @@ text-align:center;font-size:10px;padding:4px 0;margin-top:18px;
 const autoTexts={
 goal:[
 "تنمية مهارات الطلاب من خلال أنشطة تعليمية تفاعلية.",
-"تحفيز الطلاب للمشاركة الفاعلة والاندماج في التعلم.",
-"تعزيز القيم التربوية والسلوكية داخل البيئة المدرسية.",
-"تطوير مهارات التفكير العليا لدى الطلاب.",
-"رفع دافعية الطلاب للتعلم من خلال التعزيز المستمر."
+"تحفيز الطلاب للمشاركة الإيجابية وتنمية روح التعلم الذاتي.",
+"تعزيز القيم التربوية والسلوكية داخل البيئة التعليمية.",
+"تطوير مهارات التفكير الناقد والإبداعي لدى الطلاب.",
+"رفع دافعية الطلاب للتعلم وتحقيق الأهداف التربوية المنشودة."
 ],
 summary:[
-"تم تنفيذ النشاط داخل الصف بمشاركة جميع الطلاب وبأساليب محفزة.",
-"تم توظيف أدوات تعليمية لتعزيز مشاركة الطلاب داخل الصف.",
-"شهد الدرس تفاعلًا إيجابيًا بين المعلم والطلاب.",
-"ركز النشاط على ترسيخ المفاهيم وربطها بواقع الطلاب.",
-"تم تقديم الشرح بطريقة مبسطة وسهلة للطلاب."
+"تم تنفيذ نشاط إثرائي داخل الصف بمشاركة فعّالة من الطلاب.",
+"استخدام وسائل تعليمية متنوعة ساهمت في زيادة تفاعل الطلاب.",
+"قدّم الطلاب عروضاً صفية تعكس مدى فهمهم للموضوع.",
+"شهد النشاط تفاعلاً إيجابياً وروح تعاون عالية.",
+"تم استخدام استراتيجيات حديثة لرفع جودة مخرجات التعلم."
 ],
 steps:[
-"شرح المفهوم ثم توزيع الطلاب إلى مجموعات للتطبيق العملي.",
-"عرض أمثلة واقعية ومناقشتها بهدف ترسيخ الفهم.",
-"تحفيز الطلاب على المشاركة من خلال أسئلة تفاعلية.",
-"استخدام أدوات تعليمية متنوعة لتعزيز الفهم.",
-"توظيف التقنية في تقديم محتوى الدرس."
+"تقديم شرح مبسط للمفهوم المستهدف ثم تطبيقه عملياً.",
+"تقسيم الطلاب لمجموعات عمل لتحقيق التعلم التعاوني.",
+"طرح أسئلة تحفيزية وتشجيع المناقشة بين الطلاب.",
+"دمج الأنشطة الرقمية لتعزيز الفهم.",
+"متابعة تقدم الطلاب وتقديم التغذية الراجعة المناسبة."
 ],
 strategies:[
-"التعلم التعاوني داخل المجموعات.",
-"التعلم النشط باستخدام المناقشات التفاعلية.",
-"التعلم باللعب لتحفيز المشاركة.",
-"تنوع الأنشطة الصفية.",
-"استراتيجيات التمايز لتلبية الفروق الفردية."
+"التعلم التعاوني والعمل ضمن مجموعات.",
+"العصف الذهني للاستفادة من خبرات الطلاب.",
+"التعلم باللعب لزيادة دافعية الطلاب.",
+"التعلم النشط وتقويم فوري مستمر.",
+"تنويع طرق التدريس بما يخدم الفروق الفردية."
 ],
 strengths:[
-"تفاعل كبير من الطلاب مع النشاط.",
-"تحقيق أهداف الدرس بشكل متميز.",
-"استخدام أدوات تعليمية مؤثرة.",
-"انضباط وتنظيم عالي داخل الصف.",
-"تحسن ملحوظ في مستوى الطلاب."
+"مستوى تفاعل الطلاب كان ممتازاً.",
+"تحقيق الأهداف التعليمية للنشاط بفعالية.",
+"توافر بيئة صفية تعليمية جاذبة ومحفزة.",
+"تحسن ملحوظ في مشاركة الطلاب المترددين.",
+"التزام الطلاب بالمهام الموكلة إليهم."
 ],
 improve:[
-"زيادة استخدام التعلم الرقمي.",
-"التوسع في الأنشطة التطبيقية.",
-"تعزيز مشاركة الطالب الضعيف.",
-"تخصيص وقت إضافي للنقاش.",
-"تنويع أساليب التقويم."
+"زيادة استخدام الوسائط الرقمية أثناء الأنشطة.",
+"إتاحة وقت أكبر للنقاش الحر.",
+"متابعة الطلاب ذوي المستوى الأقل بشكل أدق.",
+"تنويع الأدوات التعليمية المستخدمة.",
+"زيادة فرص القيادة الطلابية داخل النشاط."
 ],
 recomm:[
-"الاستمرار في تطبيق الاستراتيجيات الفاعلة.",
-"إتاحة فرص مشاركة أكبر لجميع الطلاب.",
-"تطوير الوسائل التعليمية المستخدمة.",
-"متابعة المستوى الأكاديمي للطلاب.",
-"استمرار التحفيز والدعم الطلابي."
+"الاستمرار في تطبيق الأنشطة الإثرائية.",
+"تنمية مهارات الطلاب من خلال أنشطة تفاعلية إضافية.",
+"تفعيل دور التقنية داخل التعلم بشكل أكبر.",
+"تشجيع التعاون الطلابي في مختلف الأنشطة.",
+"تعزيز دعم الطلاب أكاديمياً بشكل مستمر."
 ]
 };
 
@@ -409,48 +420,47 @@ improveBox.innerText=improve.value;
 recommBox.innerText=recomm.value;
 }
 
-function loadImage(input,target){
-let file=input.files[0];
-let reader=new FileReader();
-reader.onload=function(){
-document.getElementById(target).innerHTML='<img src="'+reader.result+'" style="width:100%;height:100%;object-fit:cover;">';
-}
-reader.readAsDataURL(file);
+function loadImage(i,t){
+let f=i.files[0];
+let r=new FileReader();
+r.onload=()=>document.getElementById(t).innerHTML=
+`<img src="${r.result}" style="width:100%;height:100%;object-fit:cover">`;
+r.readAsDataURL(f);
 }
 
-function downloadPDF(){
-html2pdf().set({
+function generatePDF(){
+let element=document.getElementById("report-content");
+let opt={
 margin:0,
 filename:"report.pdf",
-image:{type:"jpeg",quality:1},
-html2canvas:{scale:3,useCORS:true},
+html2canvas:{scale:3,scrollY:0},
 jsPDF:{unit:"mm",format:"a4",orientation:"portrait"}
-}).from(document.getElementById("report-content")).save();
+};
+html2pdf().from(element).set(opt).save();
 }
 
-async function sharePDFWhatsApp(){
-const el=document.getElementById("report-content");
-const worker=html2pdf().set({
-margin:0,filename:"report.pdf",
-image:{type:"jpeg",quality:1},
-html2canvas:{scale:3,useCORS:true},
+async function shareWhatsApp(){
+let el=document.getElementById("report-content");
+let opt={
+margin:0,html2canvas:{scale:3,scrollY:0},
 jsPDF:{unit:"mm",format:"a4",orientation:"portrait"}
-}).from(el);
-const blob=await worker.outputPdf("blob");
-const file=new File([blob],"report.pdf",{type:"application/pdf"});
-if(navigator.share){
-navigator.share({title:"تقرير إشرافي",files:[file]});
+};
+let blob=await html2pdf().from(el).set(opt).outputPdf("blob");
+let file=new File([blob],"report.pdf",{type:"application/pdf"});
+if(navigator.canShare && navigator.canShare({files:[file]})){
+await navigator.share({files:[file],title:"تقرير إشرافي"});
 }else{
-worker.save();
+let url=URL.createObjectURL(blob);
+window.open(`https://wa.me/?text=${encodeURIComponent(url)}`);
 }
 }
 
 async function loadDates(){
-let g=new Date(),gy=g.getFullYear(),gm=g.getMonth()+1,gd=g.getDate();
-document.getElementById("gDate").innerText=`${gd}-${gm}-${gy}`;
-let r=await fetch(`https://api.aladhan.com/v1/gToH?date=${gd}-${gm}-${gy}`);
+let g=new Date();
+gDate.innerText=`${g.getDate()}-${g.getMonth()+1}-${g.getFullYear()}`;
+let r=await fetch(`https://api.aladhan.com/v1/gToH?date=${g.getDate()}-${g.getMonth()+1}-${g.getFullYear()}`);
 let d=await r.json(),h=d.data.hijri;
-document.getElementById("hDate").innerText=`${h.day}-${h.month.number}-${h.year}`;
+hDate.innerText=`${h.day}-${h.month.number}-${h.year}`;
 }
 loadDates();
 </script>
