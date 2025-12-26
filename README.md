@@ -8,24 +8,36 @@
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
+
 *{margin:0;padding:0;box-sizing:border-box;}
-html,body{font-family:'Cairo',sans-serif;background:#ffffff;direction:rtl;overflow-x:hidden;}
-.container{max-width:950px;margin:auto;padding:10px;}
+html,body{
+font-family:'Cairo',sans-serif;background:#ffffff;direction:rtl;
+overflow-x:hidden;
+}
 
-label{font-size:13px;font-weight:700;margin-top:10px;display:block;color:#083024;}
+/* Improved Input Tool */
+.container{
+max-width:900px;margin:auto;padding:15px;
+background:#f7fdf9;border-radius:12px;margin-top:80px;
+box-shadow:0 4px 10px rgba(0,0,0,.12);
+}
+label{font-size:15px;font-weight:700;margin-top:12px;display:block;color:#083024;}
 input,select,textarea{
-width:100%;padding:8px;margin-top:4px;
-border:1px solid #066d4d;border-radius:6px;font-size:13px;
+width:100%;padding:12px;margin-top:6px;
+border:2px solid #066d4d;border-radius:8px;font-size:15px;
+background:#ffffff;
 }
-textarea{height:85px;resize:none;}
+textarea{height:120px;resize:none;}
 
-.auto-buttons{display:flex;gap:5px;margin-top:5px;flex-wrap:wrap;}
+.auto-buttons{
+display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;
+}
 .auto-buttons button{
-padding:5px 8px;background:#066d4d;border:none;
-color:#fff;cursor:pointer;border-radius:3px;font-size:11px;
-font-weight:bold;
+padding:6px 10px;background:#066d4d;border:none;
+color:#fff;cursor:pointer;border-radius:4px;font-size:12px;font-weight:bold;
 }
 
+/* Fixed Buttons */
 .btn-container{
 text-align:center;padding:10px;background:#f5f5f5;
 position:fixed;top:0;left:0;width:100%;z-index:20;
@@ -34,27 +46,31 @@ box-shadow:0 3px 6px rgba(0,0,0,0.25);
 }
 button.main-btn{
 background:#066d4d;color:#fff;border:none;
-padding:10px 22px;font-size:14px;border-radius:6px;cursor:pointer;
+padding:12px 26px;font-size:15px;border-radius:7px;cursor:pointer;
 }
-button.main-btn:hover{background:#05523a;}
 
-#report-content{margin-top:80px;width:100%;}
+/* Report Section */
+#report-content{
+margin-top:40px;width:100%;
+}
 
 .header{
-width:100%;height:135px;margin-top:20px;
-position:relative;overflow:hidden;
-background:#083024;border-radius:0;
-display:flex;align-items:center;justify-content:center;
+width:100%;height:135px;margin-top:20px;position:relative;overflow:hidden;
+background:#083024;display:flex;align-items:center;justify-content:center;
 }
-.header img{width:180px;opacity:.95;}
+.header img{
+width:180px;opacity:.95;
+}
 .header-right-top,.header-right-bottom,.header-left-bottom{
 position:absolute;color:#ffffff;font-weight:700;
 }
-.header-right-top{top:6px;right:12px;font-size:13px;}
-.header-right-bottom{bottom:6px;right:12px;font-size:12px;font-weight:600;}
-.header-left-bottom{bottom:6px;left:12px;font-size:12px;font-weight:600;direction:ltr;text-align:left;}
+.header-right-top{top:6px;right:12px;font-size:15px;}
+.header-right-bottom{bottom:6px;right:12px;font-size:14px;font-weight:600;}
+.header-left-bottom{bottom:6px;left:12px;font-size:14px;font-weight:600;direction:ltr;text-align:left;}
 
-.page{width:100%;max-width:830px;padding:10px;margin:auto;}
+.page{
+width:100%;max-width:830px;padding:15px;margin:auto;
+}
 
 .info-grid{
 display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
@@ -62,63 +78,64 @@ gap:6px;margin-bottom:12px;
 }
 .info-box{
 background:#e8f2ee;border-radius:8px;
-font-size:11px;font-weight:600;
-color:#083024;text-align:center;
-height:42px;display:flex;align-items:center;justify-content:center;
+font-size:14px;font-weight:600;
+color:#083024;text-align:center;height:42px;
+display:flex;align-items:center;justify-content:center;
 box-shadow:0 3px 6px rgba(6,109,77,0.28);
-border:1px solid rgba(6,109,77,0.35);
+border:2px solid rgba(6,109,77,0.35);
 }
 
-.objective-box{
-background:#f3f9f6;border:1px solid rgba(6,109,77,0.35);
-padding:6px 10px;border-radius:8px;margin-bottom:10px;
-height:110px;overflow:auto;
+/* Report Content Boxes Large Font */
+.objective-box,.report-box{
+background:#ffffff;border-radius:10px;
+padding:10px;border:2px solid rgba(6,109,77,0.35);
+height:140px;overflow:auto;
 box-shadow:0 3px 6px rgba(6,109,77,0.28);
 }
-.objective-title{
-text-align:center;font-size:13px;font-weight:700;color:#083024;
-border-bottom:1px solid #066d4d;padding-bottom:3px;margin-bottom:3px;
+.objective-title,.report-box-title{
+font-size:15px;font-weight:700;text-align:center;color:#083024;
+border-bottom:2px solid #ccd9d0;margin-bottom:6px;padding-bottom:4px;
+}
+.report-box-content{
+font-size:15px;line-height:1.6;color:#000;
 }
 
 .report-row{
 display:grid;grid-template-columns:1fr 1fr;
-gap:10px;margin-bottom:10px;
+gap:12px;margin-bottom:12px;
 }
-.report-box{
-background:#ffffff;border-radius:8px;
-padding:6px;border:1px solid rgba(6,109,77,0.35);
-height:115px;overflow:auto;
-box-shadow:0 3px 6px rgba(6,109,77,0.28);
-}
-.report-box-title{
-font-size:12px;font-weight:700;text-align:center;color:#083024;
-border-bottom:1px solid #ccd9d0;margin-bottom:4px;padding-bottom:3px;
-}
-.report-box-content{font-size:10px;line-height:1.3;}
 
+/* Images */
 .image-evidence-grid{
 display:grid;grid-template-columns:1fr 1fr;
-gap:8px;margin-top:8px;
+gap:10px;margin-top:8px;
 }
 .image-box{
-height:130px;border:1px dashed #066d4d;border-radius:8px;
+height:130px;border:2px dashed #066d4d;border-radius:10px;
 display:flex;align-items:center;justify-content:center;
-color:#066d4d;font-size:10px;overflow:hidden;
-box-shadow:0 3px 6px rgba(6,109,77,0.28);
+color:#066d4d;font-size:12px;overflow:hidden;
 }
 
+/* Signature */
 .signature-section{
 margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:20px;
 }
-.signature-box{text-align:center;font-size:11px;color:#083024;font-weight:600;}
+.signature-box{text-align:center;font-size:13px;color:#083024;font-weight:700;}
 .signature-line{
-margin-top:8px;border-top:1px solid #083024;
+margin-top:8px;border-top:2px solid #083024;
 width:80%;margin-inline:auto;margin-bottom:4px;
 }
 
+/* Footer */
 .footer{
 width:100%;background:#083024;color:#ffffff;
-text-align:center;font-size:10px;padding:4px 0;margin-top:18px;
+text-align:center;font-size:12px;padding:6px 0;margin-top:18px;
+}
+
+/* Mobile Improvements */
+@media(max-width:600px){
+textarea{height:160px;}
+.report-row{grid-template-columns:1fr;}
 }
 </style>
 </head>
