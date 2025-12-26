@@ -3,11 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <title>أداة إصدار التقارير والشواهد</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;}
 html,body{font-family:'Cairo',sans-serif;background:#ffffff;direction:rtl;}
-.container{max-width:900px;margin:auto;padding:15px;}
+
+/* FORM */
+.container{max-width:900px;margin:auto;padding:15px;margin-bottom:30px;}
 h2{text-align:center;margin-bottom:15px;color:#083024;}
 label{font-size:13px;font-weight:700;margin-top:10px;display:block;color:#083024;}
 input,select,textarea{
@@ -20,16 +24,113 @@ margin-top:18px;background:#066d4d;color:#fff;border:none;
 padding:12px 18px;font-size:15px;border-radius:6px;cursor:pointer;width:100%;
 }
 button:hover{background:#05523a;}
-
-.flex-row{display:flex;gap:10px;}
-.flex-col{flex:1;}
-
-.image-upload{margin-top:5px;font-size:12px;}
-
 .auto-buttons{display:flex;gap:5px;margin-top:5px;}
 .auto-buttons button{
 padding:5px;background:#0a5c58;border:none;color:#fff;
 cursor:pointer;border-radius:4px;font-size:10px;
+}
+
+/* REPORT */
+.btn-container{
+text-align:center;padding:10px;background:#f5f5f5;
+position:fixed;top:0;left:0;width:100%;z-index:10;
+display:flex;gap:10px;justify-content:center;
+}
+.btn-container button{
+background:#066d4d;color:#fff;border:none;
+padding:10px 25px;font-size:15px;border-radius:6px;cursor:pointer;
+}
+.btn-container button:hover{background:#05523a;}
+@media print{.btn-container{display:none;}}
+
+#report-content{display:none;}
+
+.header{
+width:100%;height:135px;margin-top:60px;
+position:relative;overflow:hidden;
+background:#083024;
+display:flex;align-items:center;justify-content:center;
+}
+.header img{
+position:relative;z-index:2;width:180px;opacity:.95;
+}
+.header-right-top,.header-right-bottom,.header-left-bottom{
+position:absolute;color:#ffffff;font-weight:700;
+}
+.header-right-top{top:6px;right:12px;font-size:13px;}
+.header-right-bottom{bottom:6px;right:12px;font-size:12px;font-weight:600;}
+.header-left-bottom{bottom:6px;left:12px;font-size:12px;font-weight:600;direction:ltr;text-align:left;}
+
+.page{width:100%;max-width:830px;padding:10px;margin:auto;}
+
+.info-grid{
+display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+gap:6px;margin-bottom:12px;
+}
+.info-box{
+background:#e8f2ee;border-radius:8px;
+font-size:11px;font-weight:600;
+color:#083024;text-align:center;
+height:42px;
+display:flex;align-items:center;justify-content:center;
+box-shadow:0 3px 6px rgba(6,109,77,0.28);
+border:1px solid rgba(6,109,77,0.35);
+}
+
+.objective-box{
+background:#f3f9f6;
+border:1px solid rgba(6,109,77,0.35);
+padding:6px 10px;border-radius:8px;margin-bottom:10px;
+height:110px;overflow:auto;
+box-shadow:0 3px 6px rgba(6,109,77,0.28);
+}
+.objective-title{
+text-align:center;font-size:13px;font-weight:700;color:#083024;
+border-bottom:1px solid #066d4d;padding-bottom:3px;margin-bottom:3px;
+}
+
+.report-row{
+display:grid;grid-template-columns:1fr 1fr;
+gap:10px;margin-bottom:10px;
+}
+.report-box{
+background:#ffffff;border-radius:8px;
+padding:6px;
+border:1px solid rgba(6,109,77,0.35);
+height:115px;overflow:auto;
+box-shadow:0 3px 6px rgba(6,109,77,0.28);
+}
+.report-box-title{
+font-size:12px;font-weight:700;text-align:center;color:#083024;
+border-bottom:1px solid #ccd9d0;margin-bottom:4px;padding-bottom:3px;
+}
+.report-box-content{font-size:10px;line-height:1.3;}
+
+.image-evidence-grid{
+display:grid;grid-template-columns:1fr 1fr;
+gap:8px;margin-top:8px;
+}
+.image-box{
+height:200px;border:1px dashed #066d4d;border-radius:8px;
+display:flex;align-items:center;justify-content:center;
+color:#066d4d;font-size:10px;overflow:hidden;
+box-shadow:0 3px 6px rgba(6,109,77,0.28);
+}
+
+.signature-section{
+margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:20px;
+}
+.signature-box{
+text-align:center;font-size:11px;color:#083024;font-weight:600;
+}
+.signature-line{
+margin-top:8px;border-top:1px solid #083024;
+width:80%;margin-inline:auto;margin-bottom:4px;
+}
+
+.footer{
+width:100%;background:#083024;color:#ffffff;
+text-align:center;font-size:10px;padding:4px 0;margin-top:18px;
 }
 </style>
 </head>
@@ -149,170 +250,199 @@ cursor:pointer;border-radius:4px;font-size:10px;
 
 <label>الهدف التربوي</label>
 <textarea id="goal"></textarea>
-<div class="auto-buttons">
-<button type="button" onclick="autoFill('goal',1)">نص 1</button>
-<button type="button" onclick="autoFill('goal',2)">نص 2</button>
-<button type="button" onclick="autoFill('goal',3)">نص 3</button>
-<button type="button" onclick="autoFill('goal',4)">نص 4</button>
-<button type="button" onclick="autoFill('goal',5)">نص 5</button>
-</div>
 
 <label>نبذة مختصرة</label>
 <textarea id="summary"></textarea>
-<div class="auto-buttons">
-<button type="button" onclick="autoFill('summary',1)">نص 1</button>
-<button type="button" onclick="autoFill('summary',2)">نص 2</button>
-<button type="button" onclick="autoFill('summary',3)">نص 3</button>
-<button type="button" onclick="autoFill('summary',4)">نص 4</button>
-<button type="button" onclick="autoFill('summary',5)">نص 5</button>
-</div>
 
 <label>إجراءات التنفيذ</label>
 <textarea id="steps"></textarea>
-<div class="auto-buttons">
-<button type="button" onclick="autoFill('steps',1)">نص 1</button>
-<button type="button" onclick="autoFill('steps',2)">نص 2</button>
-<button type="button" onclick="autoFill('steps',3)">نص 3</button>
-<button type="button" onclick="autoFill('steps',4)">نص 4</button>
-<button type="button" onclick="autoFill('steps',5)">نص 5</button>
-</div>
 
 <label>الاستراتيجيات</label>
 <textarea id="strategies"></textarea>
-<div class="auto-buttons">
-<button type="button" onclick="autoFill('strategies',1)">نص 1</button>
-<button type="button" onclick="autoFill('strategies',2)">نص 2</button>
-<button type="button" onclick="autoFill('strategies',3)">نص 3</button>
-<button type="button" onclick="autoFill('strategies',4)">نص 4</button>
-<button type="button" onclick="autoFill('strategies',5)">نص 5</button>
-</div>
 
 <label>نقاط القوة</label>
 <textarea id="strengths"></textarea>
-<div class="auto-buttons">
-<button type="button" onclick="autoFill('strengths',1)">نص 1</button>
-<button type="button" onclick="autoFill('strengths',2)">نص 2</button>
-<button type="button" onclick="autoFill('strengths',3)">نص 3</button>
-<button type="button" onclick="autoFill('strengths',4)">نص 4</button>
-<button type="button" onclick="autoFill('strengths',5)">نص 5</button>
-</div>
 
 <label>نقاط التحسين</label>
 <textarea id="improve"></textarea>
-<div class="auto-buttons">
-<button type="button" onclick="autoFill('improve',1)">نص 1</button>
-<button type="button" onclick="autoFill('improve',2)">نص 2</button>
-<button type="button" onclick="autoFill('improve',3)">نص 3</button>
-<button type="button" onclick="autoFill('improve',4)">نص 4</button>
-<button type="button" onclick="autoFill('improve',5)">نص 5</button>
-</div>
 
 <label>التوصيات</label>
 <textarea id="recomm"></textarea>
-<div class="auto-buttons">
-<button type="button" onclick="autoFill('recomm',1)">نص 1</button>
-<button type="button" onclick="autoFill('recomm',2)">نص 2</button>
-<button type="button" onclick="autoFill('recomm',3)">نص 3</button>
-<button type="button" onclick="autoFill('recomm',4)">نص 4</button>
-<button type="button" onclick="autoFill('recomm',5)">نص 5</button>
-</div>
 
 <label>الصورة الأولى</label>
-<input type="file" id="img1" class="image-upload" accept="image/*">
+<input type="file" id="img1" accept="image/*">
 
 <label>الصورة الثانية</label>
-<input type="file" id="img2" class="image-upload" accept="image/*">
+<input type="file" id="img2" accept="image/*">
 
-<button onclick="saveData()">إنشاء التقرير</button>
+<button onclick="showReport()">عرض التقرير</button>
 </div>
 
+
+<div id="report-content">
+
+<div class="btn-container">
+<button onclick="downloadPDF()">تنزيل ملف PDF</button>
+<button onclick="sharePDFWhatsApp()">مشاركة عبر واتساب</button>
+</div>
+
+<div class="header">
+<img src="https://i.ibb.co/1fc5gB6v/9-C92-E57-B-23-FA-479-D-A024-1-D5-F871-B4-F8-D.png">
+<div class="header-right-top" id="educationBox">إدارة التعليم</div>
+<div class="header-right-bottom" id="reportTypeBox">عنوان التقرير</div>
+<div class="header-left-bottom"><span id="gDate"></span> | <span id="hDate"></span></div>
+</div>
+
+<div class="page">
+
+<div class="info-grid">
+<div class="info-box" id="termBox"></div>
+<div class="info-box" id="gradeBox"></div>
+<div class="info-box" id="subjectBox"></div>
+<div class="info-box" id="reportNameBox"></div>
+<div class="info-box" id="targetBox"></div>
+<div class="info-box" id="countBox"></div>
+<div class="info-box" id="placeBox"></div>
+</div>
+
+<div class="objective-box">
+<div class="objective-title">الهدف التربوي</div>
+<div class="report-box-content" id="goalBox"></div>
+</div>
+
+<div class="report-row">
+<div class="report-box">
+<div class="report-box-title">نبذة مختصرة</div>
+<div class="report-box-content" id="summaryBox"></div>
+</div>
+<div class="report-box">
+<div class="report-box-title">إجراءات التنفيذ</div>
+<div class="report-box-content" id="stepsBox"></div>
+</div>
+</div>
+
+<div class="report-row">
+<div class="report-box">
+<div class="report-box-title">الاستراتيجيات</div>
+<div class="report-box-content" id="strategiesBox"></div>
+</div>
+<div class="report-box">
+<div class="report-box-title">نقاط القوة</div>
+<div class="report-box-content" id="strengthsBox"></div>
+</div>
+</div>
+
+<div class="report-row">
+<div class="report-box">
+<div class="report-box-title">نقاط التحسين</div>
+<div class="report-box-content" id="improveBox"></div>
+</div>
+<div class="report-box">
+<div class="report-box-title">التوصيات</div>
+<div class="report-box-content" id="recommBox"></div>
+</div>
+</div>
+
+<div class="image-evidence-grid">
+<div class="image-box">
+<img id="image1Box" style="width:100%;height:100%;object-fit:cover;">
+</div>
+<div class="image-box">
+<img id="image2Box" style="width:100%;height:100%;object-fit:cover;">
+</div>
+</div>
+
+<div class="signature-section">
+<div class="signature-box">
+اسم المعلم: فهد الخالدي
+<div class="signature-line"></div>
+توقيع المعلم
+</div>
+<div class="signature-box">
+مدير المدرسة: نايف اللحياني
+<div class="signature-line"></div>
+توقيع المدير
+</div>
+</div>
+
+<div class="footer">وزارة التعليم – المملكة العربية السعودية</div>
+
+</div>
+</div>
+
+
 <script>
-const autoTexts={
-goal:[
-"تنمية مهارات الطلاب من خلال أنشطة تعليمية تفاعلية.",
-"تحفيز الطلاب للمشاركة الفاعلة والاندماج في التعلم.",
-"تعزيز القيم التربوية والسلوكية داخل البيئة المدرسية.",
-"تطوير مهارات التفكير العليا لدى الطلاب.",
-"رفع دافعية الطلاب للتعلم من خلال التعزيز المستمر."
-],
-summary:[
-"تم تنفيذ النشاط داخل الصف بمشاركة جميع الطلاب وبأساليب محفزة.",
-"تم توظيف أدوات تعليمية لتعزيز مشاركة الطلاب داخل الصف.",
-"شهد الدرس تفاعلًا إيجابيًا بين المعلم والطلاب.",
-"ركز النشاط على ترسيخ المفاهيم وربطها بواقع الطلاب.",
-"تم تقديم الشرح بطريقة مبسطة وسهلة للطلاب."
-],
-steps:[
-"شرح المفهوم ثم توزيع الطلاب إلى مجموعات للتطبيق العملي.",
-"عرض أمثلة واقعية ومناقشتها بهدف ترسيخ الفهم.",
-"تحفيز الطلاب على المشاركة من خلال أسئلة تفاعلية.",
-"استخدام أدوات تعليمية متنوعة لتعزيز الفهم.",
-"توظيف التقنية في تقديم محتوى الدرس."
-],
-strategies:[
-"التعلم التعاوني داخل المجموعات.",
-"التعلم النشط باستخدام المناقشات التفاعلية.",
-"التعلم باللعب لتحفيز المشاركة.",
-"تنوع الأنشطة الصفية.",
-"استراتيجيات التمايز لتلبية الفروق الفردية."
-],
-strengths:[
-"تفاعل كبير من الطلاب مع النشاط.",
-"تحقيق أهداف الدرس بشكل متميز.",
-"استخدام أدوات تعليمية مؤثرة.",
-"انضباط وتنظيم عالي داخل الصف.",
-"تحسن ملحوظ في مستوى الطلاب."
-],
-improve:[
-"زيادة استخدام التعلم الرقمي.",
-"التوسع في الأنشطة التطبيقية.",
-"تعزيز مشاركة الطالب الضعيف.",
-"تخصيص وقت إضافي للنقاش.",
-"تنويع أساليب التقويم."
-],
-recomm:[
-"الاستمرار في تطبيق الاستراتيجيات الفاعلة.",
-"إتاحة فرص مشاركة أكبر لجميع الطلاب.",
-"تطوير الوسائل التعليمية المستخدمة.",
-"متابعة المستوى الأكاديمي للطلاب.",
-"استمرار التحفيز والدعم الطلابي."
-]
+function showReport(){
+document.querySelector(".container").style.display="none";
+document.getElementById("report-content").style.display="block";
+
+document.getElementById("educationBox").innerText=education.value;
+document.getElementById("reportTypeBox").innerText=reportType.value;
+document.getElementById("reportNameBox").innerText=reportType.value;
+document.getElementById("termBox").innerText=term.value;
+document.getElementById("gradeBox").innerText=grade.value;
+document.getElementById("subjectBox").innerText=subject.value;
+document.getElementById("targetBox").innerText=target.value;
+document.getElementById("countBox").innerText=count.value;
+document.getElementById("placeBox").innerText=place.value;
+
+document.getElementById("goalBox").innerText=goal.value;
+document.getElementById("summaryBox").innerText=summary.value;
+document.getElementById("stepsBox").innerText=steps.value;
+document.getElementById("strategiesBox").innerText=strategies.value;
+document.getElementById("strengthsBox").innerText=strengths.value;
+document.getElementById("improveBox").innerText=improve.value;
+document.getElementById("recommBox").innerText=recomm.value;
+
+let i1=img1.files[0];
+let i2=img2.files[0];
+if(i1){
+let r1=new FileReader();
+r1.onload=()=>{image1Box.src=r1.result;}
+r1.readAsDataURL(i1);
+}
+if(i2){
+let r2=new FileReader();
+r2.onload=()=>{image2Box.src=r2.result;}
+r2.readAsDataURL(i2);
 }
 
-function autoFill(field,i){
-document.getElementById(field).value=autoTexts[field][i-1];
+loadDates();
 }
 
-function saveData(){
-let data={
-education:education.value,
-term:term.value,
-reportType:reportType.value,
-grade:grade.value,
-subject:subject.value,
-target:target.value,
-count:count.value,
-place:place.value,
-goal:goal.value,
-summary:summary.value,
-steps:steps.value,
-strategies:strategies.value,
-strengths:strengths.value,
-improve:improve.value,
-recomm:recomm.value
-};
-localStorage.setItem("reportData",JSON.stringify(data));
-saveImage("img1","image1");
-saveImage("img2","image2");
-setTimeout(()=>{window.location.href="report.html";},500);
+function downloadPDF(){
+html2pdf().set({
+margin:0,
+filename:"report.pdf",
+image:{type:"jpeg",quality:1},
+html2canvas:{scale:3,useCORS:true},
+jsPDF:{unit:"mm",format:"a4",orientation:"portrait"}
+}).from(document.getElementById("report-content")).save();
 }
 
-function saveImage(inputId,key){
-let file=document.getElementById(inputId).files[0];
-if(!file) return;
-let reader=new FileReader();
-reader.onload=()=>{localStorage.setItem(key,reader.result);}
-reader.readAsDataURL(file);
+async function sharePDFWhatsApp(){
+const el=document.getElementById("report-content");
+const worker=html2pdf().set({
+margin:0,filename:"report.pdf",
+image:{type:"jpeg",quality:1},
+html2canvas:{scale:3,useCORS:true},
+jsPDF:{unit:"mm",format:"a4",orientation:"portrait"}
+}).from(el);
+const blob=await worker.outputPdf("blob");
+const file=new File([blob],"report.pdf",{type:"application/pdf"});
+if(navigator.share){
+navigator.share({title:"تقرير إشرافي",files:[file]});
+}else{
+worker.save();
+}
+}
+
+async function loadDates(){
+let g=new Date(),gy=g.getFullYear(),gm=g.getMonth()+1,gd=g.getDate();
+document.getElementById("gDate").innerText=`${gd}-${gm}-${gy}`;
+let r=await fetch(`https://api.aladhan.com/v1/gToH?date=${gd}-${gm}-${gy}`);
+let d=await r.json(),h=d.data.hijri;
+document.getElementById("hDate").innerText=`${h.day}-${h.month.number}-${h.year}`;
 }
 </script>
 
