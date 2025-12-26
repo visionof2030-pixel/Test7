@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -19,10 +19,11 @@ border:1px solid #066d4d;border-radius:6px;font-size:13px;
 }
 textarea{height:85px;resize:none;}
 
-.auto-buttons{display:flex;gap:5px;margin-top:5px;}
+.auto-buttons{display:flex;gap:5px;margin-top:5px;flex-wrap:wrap;}
 .auto-buttons button{
-padding:4px 7px;background:#0a5c58;border:none;
-color:#fff;cursor:pointer;border-radius:3px;font-size:10px;
+padding:5px 8px;background:#066d4d;border:none;
+color:#fff;cursor:pointer;border-radius:3px;font-size:11px;
+font-weight:bold;
 }
 
 .btn-container{
@@ -37,9 +38,7 @@ padding:10px 22px;font-size:14px;border-radius:6px;cursor:pointer;
 }
 button.main-btn:hover{background:#05523a;}
 
-#report-content{margin-top:70px;width:100%;}
-
-/* التصميم الأصلي مضبوط بالكامل */
+#report-content{margin-top:80px;width:100%;}
 
 .header{
 width:100%;height:135px;margin-top:20px;
@@ -102,7 +101,7 @@ display:grid;grid-template-columns:1fr 1fr;
 gap:8px;margin-top:8px;
 }
 .image-box{
-height:200px;border:1px dashed #066d4d;border-radius:8px;
+height:130px;border:1px dashed #066d4d;border-radius:8px;
 display:flex;align-items:center;justify-content:center;
 color:#066d4d;font-size:10px;overflow:hidden;
 box-shadow:0 3px 6px rgba(6,109,77,0.28);
@@ -133,9 +132,8 @@ text-align:center;font-size:10px;padding:4px 0;margin-top:18px;
 
 <div class="container">
 
-<!-- أداة الإدخال -->
 <label>إدارة التعليم</label>
-<select id="education" onchange="updateReport()">
+<select id="education" oninput="updateReport()">
 <option value="">اختر الإدارة</option>
 <option>الإدارة العامة للتعليم بمنطقة مكة المكرمة</option>
 <option>الإدارة العامة للتعليم بمنطقة الرياض</option>
@@ -156,14 +154,14 @@ text-align:center;font-size:10px;padding:4px 0;margin-top:18px;
 </select>
 
 <label>الفصل الدراسي</label>
-<select id="term" onchange="updateReport()">
+<select id="term" oninput="updateReport()">
 <option value="">اختر الفصل</option>
 <option>الفصل الدراسي الأول</option>
 <option>الفصل الدراسي الثاني</option>
 </select>
 
 <label>اسم التقرير</label>
-<select id="reportType" onchange="updateReport()">
+<select id="reportType" oninput="updateReport()">
 <option>تقرير نشاط إثرائي</option>
 </select>
 
@@ -182,7 +180,6 @@ text-align:center;font-size:10px;padding:4px 0;margin-top:18px;
 <label>مكان التنفيذ</label>
 <input id="place" oninput="updateReport()">
 
-<!-- نصوص تلقائية -->
 <script>
 const autoTexts={
 goal:[
@@ -270,7 +267,7 @@ recomm:[
 <label>الاستراتيجيات</label>
 <textarea id="strategies" oninput="updateReport()"></textarea>
 <div class="auto-buttons">
-button onclick="autoFill('strategies',1)">1</button>
+<button onclick="autoFill('strategies',1)">1</button>
 <button onclick="autoFill('strategies',2)">2</button>
 <button onclick="autoFill('strategies',3)">3</button>
 <button onclick="autoFill('strategies',4)">4</button>
@@ -315,8 +312,6 @@ button onclick="autoFill('strategies',1)">1</button>
 
 </div>
 
-
-<!-- التقرير الأصلي كاملاً -->
 <div id="report-content">
 
 <div class="header">
@@ -399,7 +394,6 @@ button onclick="autoFill('strategies',1)">1</button>
 </div>
 </div>
 
-
 <script>
 function autoFill(field,i){
 document.getElementById(field).value=autoTexts[field][i-1];
@@ -464,8 +458,9 @@ window.open(`https://wa.me/?text=${encodeURIComponent(url)}`);
 
 async function loadDates(){
 let g=new Date();
-gDate.innerText=`${g.getDate()}-${g.getMonth()+1}-${g.getFullYear()}`;
-let r=await fetch(`https://api.aladhan.com/v1/gToH?date=${g.getDate()}-${g.getMonth()+1}-${g.getFullYear()}`);
+g.findate=`${g.getDate()}-${g.getMonth()+1}-${g.getFullYear()}`;
+gDate.innerText=g.findate;
+let r=await fetch(`https://api.aladhan.com/v1/gToH?date=${g.findate}`);
 let d=await r.json();
 hDate.innerText=`${d.data.hijri.day}-${d.data.hijri.month.number}-${d.data.hijri.year}`;
 }
