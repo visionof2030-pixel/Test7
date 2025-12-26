@@ -201,7 +201,7 @@ border-bottom:1px solid #ccd9d0;margin-bottom:4px;padding-bottom:3px;
 
 ..image-evidence-grid{
 display:grid;
-grid-template-columns:160px 160px;
+grid-template-columns:65px 65px;
 justify-content:center;
 gap:10px;
 margin-top:8px;
